@@ -1,11 +1,13 @@
 package dabramov.bledebugger
 
+import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
@@ -51,6 +53,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         when (item.itemId) {
+            R.id.select_ble_device -> {
+                val intent = Intent(this, SelectBleDeviceActivity::class.java)
+                startActivityForResult(intent, SELECT_BLE_DEVICE_CODE)
+                return true
+            }
             R.id.action_settings -> return true
             else -> return super.onOptionsItemSelected(item)
         }
@@ -81,5 +88,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.i(TAG, "on activity result")
+        when (requestCode) {
+            SELECT_BLE_DEVICE_CODE -> {
+                Log.i(TAG, "select ble device result: $resultCode")
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    companion object {
+        const val TAG = "BLE_DEBUGGER"
+        const val SELECT_BLE_DEVICE_CODE = 1
     }
 }
